@@ -29,12 +29,36 @@ spring:
   devtools:
     restart:
       enabled: true
-      additional-exclude: static/**
+      additional-exclude: static/**,.h2.server.properties
     livereload:
       enabled: false # we use Webpack dev server + BrowserSync for livereload
   jackson:
     serialization:
       indent-output: true
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:h2:file:./build/h2db/db/chartertest;DB_CLOSE_DELAY=-1
+    username: CharterTest
+    password:
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+  h2:
+    console:
+      enabled: false
+  jpa:
+    database-platform: io.github.jhipster.domain.util.FixedH2Dialect
+    database: H2
+    show-sql: true
+    properties:
+      hibernate.id.new_generator_mappings: true
+      hibernate.connection.provider_disables_autocommit: true
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
+  liquibase:
+    # Remove 'faker' if you do not want the sample data to be loaded automatically
+    contexts: dev, faker
   mail:
     host: localhost
     port: 25
@@ -71,7 +95,7 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 and be at least 256 bits long (you can type `openssl rand -base64 64` on your command line to generate a 512 bits one)
-        base64-secret: MDUwYjgzYzEzYzYzMGE3MmRmNjU4YWE2N2FiMmVmY2RiYzA0YWFhYTlmMTE3NzI3YzI2NjY3OGYzYmViMTdkZmZhN2I4MDk4NTg4MTljMTY4NWMyNjA2YWFlYjIyNTU2NGZkYWZmMGI3NmZlMTA3ZTg2Y2I5MTU5MmZkN2E0M2M=
+        base64-secret: NWFhMzU5MzgzZDFmZTQwYWJmNGZmNjBkODAxZjZkMzBjZWQ4NjM4ZDAwYmMxNzQyOTcxYzRlY2Q4NzBhZDQ2ZDUxZDhiZWY3YmFkMTQ4YjQ3MDI5ZmEyZDk3OGNmZmY5ODg3MmQzNDc0OTJlZDJhOTY2NmY1MDlmMGFiODZkY2M=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
@@ -88,6 +112,9 @@ jhipster:
       host: localhost
       port: 5000
       queue-size: 512
+  audit-events:
+    retention-period: 30 # Number of days before audit events are deleted.
+
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
