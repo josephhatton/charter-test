@@ -6,6 +6,7 @@ export interface ITransaction {
   amount?: number;
   points?: number;
   date?: Moment;
+  total?: number;
 }
 
 export const defaultValue: Readonly<ITransaction> = {};

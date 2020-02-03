@@ -50,6 +50,21 @@ export const Transaction = (props: ITransactionProps) => {
     });
 
   const { transactionList, match, totalItems } = props;
+
+  const getTotal = trans => {
+    var overFifty = 0;
+    var additional = 0;
+    console.log('-----------------TEST------', trans);
+    console.log('-----------------TEST1------', trans.amount)
+    if(parseFloat(trans.amount) > 50 ) {
+      overFifty = 50;
+      if(parseFloat(trans.amount) > 100 ) {
+        additional = (parseFloat(trans.amount) - 100)*2;
+      }
+    }
+    return overFifty + additional;
+  }
+
   return (
     <div>
       <h2 id="transaction-heading">
@@ -68,16 +83,16 @@ export const Transaction = (props: ITransactionProps) => {
                   ID <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('name')}>
-                  Name <FontAwesomeIcon icon="sort" />
+                  Transaction <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('amount')}>
                   Amount <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('points')}>
-                  Points <FontAwesomeIcon icon="sort" />
-                </th>
                 <th className="hand" onClick={sort('date')}>
                   Date <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('total')}>
+                  Total Points <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
@@ -92,10 +107,10 @@ export const Transaction = (props: ITransactionProps) => {
                   </td>
                   <td>{transaction.name}</td>
                   <td>{transaction.amount}</td>
-                  <td>{transaction.points}</td>
                   <td>
                     <TextFormat type="date" value={transaction.date} format={APP_LOCAL_DATE_FORMAT} />
                   </td>
+                  <td>{getTotal(transaction)}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${transaction.id}`} color="info" size="sm">
